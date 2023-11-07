@@ -2,7 +2,6 @@
 #define _VECTOR_H_
 
 typedef void * data_type;
-
 typedef struct Vector Vector;
 
 Vector *vector_construct();

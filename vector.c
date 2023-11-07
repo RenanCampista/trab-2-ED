@@ -15,7 +15,9 @@ struct Vector {
 
 Vector *vector_construct() {
     Vector *v = (Vector *)calloc(1, sizeof(Vector));
-
+    if (v == NULL)
+        exit(printf("Error: vector_construct: could not allocate memory.\n"));
+        
     v->allocated = VECTOR_INIT_SIZE;
     v->size = 0;
     v->data = (data_type *)calloc(VECTOR_INIT_SIZE, sizeof(data_type));
