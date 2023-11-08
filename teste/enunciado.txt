@@ -1,0 +1,352 @@
+Suponha que você foi contratado para atuar como desenvolvedor em uma empresa da área de logística de transporte. A maioria dos clientes da empresa são fábricas que precisam distribuir seus produtos para os pontos de venda. Os pontos de venda estão localizados em diferentes bairros. Com objetivo de minimizar o tempo de entrega e o consumo de combustível, você foi incumbido de escrever um algoritmo para encontrar o menor caminho da fábrica até cada um dos pontos de entrega. A Figura 1 ilustra as distâncias entre a fábrica e os pontos de entrega. Estas relações são representadas por um grafo em que o nó verde representa a fábrica, os nós azuis representam os pontos de entrega e as arestas indicam que existe um caminho entre os nós e o tamanho (custo) do caminho é o valor associado à aresta.
+Para alcançar um ponto de entrega pode ser necessário passar por outros bairros. Por exemplo, não é possível ir diretamente de 0 para 2. Mas é possível alcançar o ponto de entrega 2 via os caminhos: 
+• 0 -> 1 -> 2,  
+• 0 -> 7 -> 8 -> 2,  
+• 0 -> 7 -> 6 -> 8 -> 2,  
+• etc.
+O objetivo do seu programa em C é encontrar os caminhos mais curtos saindo do nó 0 para todos os outros nós do grafo.
+
+Entradas e Saídas
+A entrada do programa será um arquivo texto com o formato abaixo:
+Entrada
+8
+1 4 7 8
+0 4 2 8 7 11
+1 8 8 2 3 7 5 4
+2 7 5 14 4 9
+3 9 5 10
+2 4 3 14 4 10 6 2
+5 2 7 1 8 6
+0 8 1 11 6 1 8 7
+2 2 6 6 7 7
+
+A primeira linha contém um número N indicando quantos de nós existem do grafo. Em seguida, cada linha representa as conexões existentes para um nó. A primeira das N linhas são as conexões do nó 0, a segunda são as conexões do nó 1 e assim por diante. Para cada conexão, são dados dois valores: um inteiro representando o nó de destino e um float representando o custo do caminho entre os nós. Assumiremos que a fábrica é sempre o nó 0 e que todos os demais nós contêm pontos de entrega.
+O programa deve gerar como saída na tela N-1 linhas (N-1 porque a fábrica não é um destino), cada uma contendo a sequência de nós (o caminho) de menor custo entre a fábrica e o ponto de entrega, seguido do custo total do caminho com duas casas após a vírgula. A primeira linha deve ser o caminho de custo mínimo da fábrica para o nó 1, a segunda linha deve ser o caminho de custo mínimo da fábrica até o nó 2 e assim por diante.
+A saída esperada para a entrada apresentada acima é:
+0 -> 1: 4.00 
+0 -> 1 -> 2: 12.00 
+0 -> 1 -> 2 -> 3: 19.00 
+0 -> 7 -> 6 -> 5 -> 4: 21.00 
+0 -> 7 -> 6 -> 5: 11.00 
+0 -> 7 -> 6: 9.00 
+0 -> 7: 8.00 
+0 -> 1 -> 2 -> 8: 14.00
+
+Desenvolvimento 
+O algoritmo de Djikstra deve ser usado para encontrar os caminhos mínimos entre a fábrica e os pontos de entrega. Ele opera em um loop principal em que a cada iteração um nó é selecionado para ser visitado. O nó escolhido é aquele com menor distância para a origem dentre os que não visitados antes. Para cada vizinho não visitado do nó, é calculada a distância da origem para o vizinho passando pelo nó e, se esta distância for menor do que a dos caminhos alternativos para o vizinho encontrados até o momento, ela é registrada no vizinho como sendo o menor caminho até então. Em iterações posteriores, caminhos melhores para o vizinho podem ser encontrados. Quando um nó é selecionado para ser visitado, necessariamente não existem mais caminhos alternativos que podem ser melhores. Portanto, o melhor caminho para o nó já pode ser retornado. A Tabela 1 traz o pseudocódigo do algoritmo de Djikstra.
+
+Pseudocódigo do Algoritmo de Dijkstra
+Algoritmo Dijkstra(Grafo, Origem): 
+    1. Crie um vector de valores booleanos chamado "Visitados" com tamanho igual ao número de nós. Inicialize os valores como falso e quando um nó for visitado, mude o valor para 1. 
+    2. Crie uma fila de prioridade "NaoVisitados" com o nó origem e distância para a origem zero.  
+    3. Crie um vector do tamanho do número de nós para armazenar o antecessor de cada no seu caminho mínimo (de onde ele veio) e o custo para o antecessor.  
+    4. Enquanto houver vértices não visitados e a fila de prioridades não for vazia: 
+    5. Escolha o nó não visitado U com a menor distância para a origem em "NaoVisitados" e o marque como visitado (adicione-o no conjunto "Visitados").  
+    6. Para cada vizinho não visitado V de U: 
+    7. Calcule a distância de V para a origem passando por U somando a distância de U para a origem e a distância entre U e V. 
+    8. Adicione o par (V, distância) em "NaoVisitados". Se a distância do par  
+    9. Retorne a estrutura com os caminhos mínimos.
+
+Ele começa criando um array booleano chamado "Visitados," que possui um elemento para cada nó no grafo. Inicialmente, todos os valores são definidos como falso para indicar que nenhum nó foi visitado. Conforme o algoritmo progride, os nós visitados são marcados como verdadeiros no array.  Em seguida, é criada uma fila de prioridade chamada "NaoVisitados" que conterá os nós a serem explorados. A fila de prioridade é usada para a seleção eficiente do próximo nó a ser explorado. Um heap deverá ser utilizado para implementar a fila de prioridade. O heap organiza os nós não visitados de acordo com suas distâncias atuais em relação à origem, de modo que o nó com a menor distância esteja sempre no topo da estrutura. Isso permite ao algoritmo escolher o próximo nó a ser explorado de forma eficiente, sem ter que verificar todas as opções. As operações de inserção e extração do nó a ser visitado do heap não devem ter complexidade superior a O(log N).
+Poderá deverá ser criada uma estrutura de dados para armazenar os antecessores de cada nó e os respectivos custos no melhor caminho da origem até o nó. Esta estrutura permite recuperar o melhor caminho partindo de todos iterando pelos antecessores, começando do nó e indo até a origem, sem a necessidade de armazenar cópias de trechos de caminhos. 
+O loop principal do algoritmo consiste nos passos descritos a seguir. O nó de origem é adicionado ao heap (fila de prioridade) com uma distância para a origem de zero. Enquanto houver vértices não visitados no grafo e a fila de prioridades "NaoVisitados" não estiver vazia, o nó U com a menor distância à origem e que ainda não foi visitado é selecionado de "NaoVisitados." O nó U é, então, marcado como visitado e o menor caminho até ele é registrado. A seguir, o algoritmo itera sobre todos os vizinhos não visitados de U. Para cada vizinho V, o algoritmo calcula a distância de V à origem passando por U. Isso é feito somando a distância de U à origem com a distância entre U e V. O nó V é adicionado no heap usando a distância como prioridade. Note que um determinado nó pode ser inserido várias vezes no heap. Contudo, pela propriedade do heap, o caminho de menor custo para cada nó terá prioridade sobre os caminhos alternativos. O processo de visitar os nós com menor custo para a origem, marcá-los como visitados e calcular as distâncias para os vizinhos e adicionar os vizinhos no heap se repete até que todos os nós tenham sido visitados ou não haja mais nós em "NaoVisitados." Finalmente, o algoritmo retorna a estrutura de dados que contém os antecessores dos nós nos melhores caminhos e esta estrutura de dados é utilizada para exibir a saída na tela.
+
+Regras  
+• As  estruturas  de  dados  utilizadas  para  armazenar  coleções  de  itens  (vector,  listas 
+encadeadas, heaps, etc.) devem ser opacas e genéricas.
+• Você deverá implemetar as funções de "problem.h", "djikstra.h" e "path.h". As outras estruturas serão fornecidas, mas você alterar elas se julgar necessário.
+• Seu código deverá ser implementado em C.
+
+
+Abaixo encontra-se o arquivo main.c, que mostra como deve ficar o programa principal
+
+#include <stdio.h> 
+#include <stdlib.h> 
+#include "heap.h" 
+#include "vector.h" 
+#include "problem.h" 
+#include "djikstra.h" 
+#include "path.h" 
+ 
+void print_and_destroy_paths(Vector *paths)  { 
+    for (int i = 0; i < vector_size(paths); i++) { 
+        Path *path = vector_get(paths, i); 
+        path_print(path); 
+        path_destroy(path); 
+    } 
+    vector_destroy(paths); 
+} 
+ 
+int main() { 
+    Problem *problem_data; 
+    Vector *paths; 
+
+    problem_data = problem_data_read("in.txt"); 
+    paths = djikstra_solve(problem_data); 
+    print_and_destroy_paths(paths); 
+    problem_data_destroy(problem_data); 
+    
+    return 0; 
+}
+
+Estrutura Vector:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "vector.h"
+
+static const int VECTOR_INIT_SIZE = 10;
+static const int VECTOR_GROWTH_RATE = 2;
+
+struct Vector {
+    data_type *data;
+    int size;
+    int allocated;
+};
+
+Vector *vector_construct() {
+    Vector *v = (Vector *)calloc(1, sizeof(Vector));
+    if (v == NULL)
+        exit(printf("Error: vector_construct: could not allocate memory.\n"));
+        
+    v->allocated = VECTOR_INIT_SIZE;
+    v->size = 0;
+    v->data = (data_type *)calloc(VECTOR_INIT_SIZE, sizeof(data_type));
+
+    return v;
+}
+
+int vector_size(Vector *v) {
+    return v->size;
+}
+
+data_type vector_get(Vector *v, int i) {
+    if (i >= vector_size(v))
+        exit(printf("Error: vector_get: invalid index %d for vector with size %d.\n", i, vector_size(v)));
+    return v->data[i];
+}
+
+void vector_set(Vector *v, int i, data_type val) {
+    if (i >= vector_size(v))
+        exit(printf("Error: vector_set: invalid index %d for vector with size %d.\n", i, vector_size(v)));
+    v->data[i] = val;
+}
+
+void vector_push_back(Vector *v, data_type val) {
+    if (v->size >= v->allocated) {
+        v->allocated *= VECTOR_GROWTH_RATE;
+        v->data = (data_type *)realloc(v->data, v->allocated * sizeof(data_type));
+    }
+
+    v->data[v->size] = val;
+    v->size++;
+}
+
+int vector_find(Vector *v, data_type val) {
+    int i = 0;
+    while (i < vector_size(v)) {
+        if (vector_get(v, i) == val)
+            return i;
+        i++;
+    }
+
+    return -1;
+}
+
+data_type vector_remove(Vector *v, int i) {
+    if (i >= v->size || i < 0)
+        exit(printf("Error: vector_remove: invalid index %d for vector with size %d.\n", i, v->size));
+
+    data_type val = v->data[i];
+
+    for (int j = i; j < v->size - 1; j++)
+        v->data[j] = v->data[j + 1];
+
+    v->size--;
+    return val;
+}
+
+data_type vector_pop_front(Vector *v) {
+    return vector_remove(v, 0);
+}
+
+data_type vector_pop_back(Vector *v) {
+    return vector_remove(v, v->size - 1);
+}
+
+void vector_insert(Vector *v, int i, data_type val) {
+    if (i < 0 || i > v->size)
+        exit(printf("Error: vector_insert: invalid index %d for vector with size %d.\n", i, v->size));
+    
+    if (v->size == v->allocated) {
+        v->allocated *= 2;
+        v->data = (data_type *)realloc(v->data, v->allocated * sizeof(data_type));
+    }
+
+    for (int j = v->size; j > i; j--)
+        v->data[j] = v->data[j - 1];
+
+    v->data[i] = val;
+    v->size++;
+}
+
+void vector_swap(Vector *v, int i, int j) {
+    if (i < 0 || i >= v->size || j < 0 || j >= v->size)
+        exit(printf("Error: vector_swap: invalid indices %d and %d for vector with size %d.\n", i, j, v->size));
+
+    data_type temp = v->data[i];
+    v->data[i] = v->data[j];
+    v->data[j] = temp;
+}
+
+void vector_sort(Vector *v) {
+    for (int i = 0; i < v->size - 1; i++) {
+        int n_trocas = 0;
+        for (int j = 0; j < v->size - i - 1; j++) {
+            if (v->data[j] > v->data[j + 1]) {
+                vector_swap(v, j, j + 1);
+                n_trocas++;
+            }
+        }
+        if (n_trocas == 0)
+            break;
+    }
+}
+
+int vector_binary_search(Vector *v, data_type val) {
+    int left = 0;
+    int right = v->size - 1;
+
+    while (left <= right){
+        int mid = left + (right - left) / 2;
+
+        if (v->data[mid] == val)
+            return mid;
+        else if (v->data[mid] < val)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return -1;
+}
+
+void vector_reverse(Vector *v) {
+    for (int i = 0; i < v->size / 2; i++)
+        vector_swap(v, i, v->size - i - 1);
+}
+
+Vector *vector_copy(Vector *v) {
+    Vector *copy = (Vector *)malloc(sizeof(Vector));
+
+    copy->data = (data_type *)malloc(v->allocated * sizeof(data_type));
+    copy->size = v->size;
+    copy->allocated = v->allocated;
+
+    memcpy(copy->data, v->data, v->size * sizeof(data_type));
+
+    return copy;
+}
+
+void vector_destroy(Vector *v, void (*destroy_fn)(data_type)) {
+    for (int i = 0; i < v->size; i++)
+        destroy_fn(v->data[i]);
+
+    free(v->data);
+    free(v);
+}
+
+void vector_clear(Vector *v) {
+    v->size = 0;
+}
+
+
+Estrutura heap
+#include <stdio.h>
+#include <stdlib.h>
+#include "heap.h"
+
+typedef struct {
+    void *data;
+    double priority;
+} HeapNode;
+
+struct Heap {
+    Vector *nodes;
+};
+
+Heap *heap_construct() {
+    Heap *heap = (Heap *)calloc(1, sizeof(Heap));
+    if (heap == NULL)
+        exit(printf("Error: heap_construct: could not allocate memory.\n"));
+    heap->nodes = vector_construct();
+    return heap;
+}
+
+void heap_destroy(Heap *heap, void (*destroy_fn)(data_type)) {
+    if (destroy_fn != NULL) {
+        for (int i = 0; i < vector_size(heap->nodes); i++)
+            destroy_fn(vector_get(heap->nodes, i));
+    }
+    vector_destroy(heap->nodes, NULL);
+    free(heap);
+}
+
+void  swap_nodes(Heap *heap, int i, int j) {
+    vector_swap(heap->nodes, i, j);
+}
+
+void heapify_down(Heap *heap, int idx) {
+    int max = idx;
+    int left_child = 2 * idx + 1;
+    int right_child = 2 * idx + 2;
+
+    if (left_child < vector_size(heap->nodes) && ((HeapNode*)vector_get(heap->nodes, left_child))->priority > ((HeapNode*)vector_get(heap->nodes, max))->priority)
+        max = left_child;
+
+    if (right_child < vector_size(heap->nodes) && ((HeapNode*)vector_get(heap->nodes, right_child))->priority > ((HeapNode*)vector_get(heap->nodes, max))->priority)
+        max = right_child;
+
+    if (max != idx) {
+        swap_nodes(heap, idx, max);
+        heapify_down(heap, max);
+    }
+}
+
+void heapify_up(Heap *heap, int idx) {
+    int parent = (idx - 1) / 2;
+    if ((parent >=0) && (((HeapNode*)vector_get(heap->nodes, idx))->priority > ((HeapNode*)vector_get(heap->nodes, parent))->priority)) {
+        swap_nodes(heap, idx, parent);
+        heapify_up(heap, parent);
+    }
+}
+
+void heap_push(Heap *heap, data_type data, double priority) {
+    HeapNode *node = (HeapNode *)calloc(1, sizeof(HeapNode));
+    if (node == NULL)
+        exit(printf("Error: heap_push: could not allocate memory.\n"));
+    node->data = data;
+    node->priority = priority;
+    vector_push_back(heap->nodes, node);
+    heapify_up(heap, vector_size(heap->nodes) - 1);
+}
+
+data_type heap_pop(Heap *heap) {
+    if (vector_size(heap->nodes) == 0)
+        exit(printf("Error: heap_pop: heap is empty.\n"));
+
+    data_type data = ((HeapNode*)vector_get(heap->nodes, 0))->data;
+    vector_set(heap->nodes, 0, vector_get(heap->nodes, vector_size(heap->nodes) - 1));
+    vector_pop_back(heap->nodes);
+    heapify_down(heap, 0);
+
+    return data;
+}
+
+int heap_is_empty(Heap *heap) {
+    return vector_size(heap->nodes) == 0;
+}
+
+
+Caso julgue necessário, poderá criar mais estruturas.
