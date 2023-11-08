@@ -1,7 +1,7 @@
 #if !defined(_HEAP_H_)
 #define _HEAP_H_
+#include "vector.h"
 
-typedef void * data_type;
 typedef struct Heap Heap;
 
 Heap *heap_construct();
