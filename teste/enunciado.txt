@@ -90,6 +90,26 @@ int main() {
 }
 
 Estrutura Vector:
+#if !defined(_VECTOR_H_)
+#define _VECTOR_H_
+
+typedef void * data_type;
+typedef struct Vector Vector;
+
+Vector *vector_construct();
+void vector_push_back(Vector *v, data_type val);
+data_type vector_get(Vector *v, int i);
+void vector_set(Vector *v, int i, data_type val);
+int vector_size(Vector *v);
+int vector_find(Vector *v, data_type val);
+data_type vector_remove(Vector *v, int i);
+data_type vector_pop_front(Vector *v);
+data_type vector_pop_back(Vector *v);
+void vector_insert(Vector *v, int i, data_type val);
+void vector_swap(Vector *v, int i, int j);
+void vector_destroy(Vector *v, void (*destroy_fn)(data_type));
+
+#endif // _VECTOR_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -214,29 +234,6 @@ void vector_sort(Vector *v) {
     }
 }
 
-int vector_binary_search(Vector *v, data_type val) {
-    int left = 0;
-    int right = v->size - 1;
-
-    while (left <= right){
-        int mid = left + (right - left) / 2;
-
-        if (v->data[mid] == val)
-            return mid;
-        else if (v->data[mid] < val)
-            left = mid + 1;
-        else
-            right = mid - 1;
-    }
-
-    return -1;
-}
-
-void vector_reverse(Vector *v) {
-    for (int i = 0; i < v->size / 2; i++)
-        vector_swap(v, i, v->size - i - 1);
-}
-
 Vector *vector_copy(Vector *v) {
     Vector *copy = (Vector *)malloc(sizeof(Vector));
 
@@ -257,12 +254,22 @@ void vector_destroy(Vector *v, void (*destroy_fn)(data_type)) {
     free(v);
 }
 
-void vector_clear(Vector *v) {
-    v->size = 0;
-}
-
-
 Estrutura heap
+#if !defined(_HEAP_H_)
+#define _HEAP_H_
+#include "vector.h"
+
+typedef struct Heap Heap;
+
+Heap *heap_construct();
+void heap_destroy(Heap *heap, void (*destroy_fn)(data_type));
+void heap_push(Heap *heap, data_type data, double priority);
+data_type heap_pop(Heap *heap);
+int heap_is_empty(Heap *heap);
+
+#endif // _HEAP_H_
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "heap.h"
