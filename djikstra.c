@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "djikstra.h"
+#include "graph_node.h"
 
 
 /*
@@ -23,5 +24,43 @@ O loop principal do algoritmo consiste nos passos descritos a seguir. O nó de o
 */
 
 Vector *djikstra_solve(Problem *problem) {
-  
+    printf("chehou aqui\n");
+    problem_set_smallest_origin_distance_from_nodes(problem);
+    Vector *visited = vector_construct();
+
+    Heap *not_visited = heap_construct();
+    for (int i = 0; i < problem->num_nodes; i++) {
+        GraphNode *node = (GraphNode *) vector_get(problem->graph_nodes, i);
+        heap_push(not_visited, node, graph_node_get_dist_origin(node));
+        vector_push_back(visited, 0);
+    }
+
+    //definir a primeira posicao como visitado
+    vector_set(visited, 0, (int *)1);
+
+    Vector *predecessors = vector_construct();
+
+    while(!heap_is_empty(not_visited)) {
+        GraphNode *node = (GraphNode *) heap_top(not_visited).data;
+        heap_pop(not_visited);
+        vector_set(visited, graph_node_get_node_number(node), (int *)1);
+
+        for (int i = 0; i < vector_size(node->connections); i++) {
+            Connection *connection = (Connection *) vector_get(node->connections, i);
+            GraphNode *neighbor = (GraphNode *) vector_get(problem->graph_nodes, connection_get_neighbor(connection));
+            if (vector_get(visited, graph_node_get_node_number(neighbor)) == 0) {
+                float new_distance = graph_node_get_dist_origin(node) + connection_get_distance(connection);
+                if (new_distance < graph_node_get_dist_origin(neighbor)) {
+                    graph_node_set_dist_origin(neighbor, new_distance);
+                    vector_set(predecessors, graph_node_get_node_number(neighbor), node);
+                    heap_push(not_visited, neighbor, new_distance);
+                }
+            }
+        }
+    }
+
+    vector_destroy(visited);
+    heap_destroy(not_visited, NULL);
+
+    return predecessors;
 }

@@ -20,7 +20,7 @@ void problem_destroy(Problem *problem) {
         GraphNode *graph_node = vector_get(problem->graph_nodes, i);
         graph_node_destruct(graph_node);
     }
-    vector_destruct(problem->graph_nodes);
+    vector_destroy(problem->graph_nodes);
     free(problem);
 }
 
@@ -43,7 +43,7 @@ Problem *problem_data_read(const char *filename) {
         GraphNode *graph_node = graph_node_construct(i);
         while(1) {
             fscanf(file, "%d %f%c", &neighbor, &distance, &c);
-            if (c == '\n') {
+            if (c != ' ') {
                 break;
             }
             Connection *connection = connection_create(neighbor, distance);
@@ -56,19 +56,40 @@ Problem *problem_data_read(const char *filename) {
     return problem;
 }
 
-// int problem_get_min_neighbor(Problem *problem, int idx) {
-//     if (idx < 0 || idx >= problem->num_nodes) {
-//         exit(printf("Error: problem_get_min_neighbor index out of bounds.\n"));
-//     }
-    
-//     Vector *connections = vector_get(problem->node_connections, idx);
-//     int min_neighbor = -1;
-//     //Pegar o vizinho com menor indice
-//     for (int i = 0; i < vector_size(connections); i++) {
-//         Connection *connection = vector_get(connections, i);
-//         if (min_neighbor == -1 || connection->neighbor < min_neighbor) {
-//             min_neighbor = connection->neighbor;
-//         }
-//     }
-//     return min_neighbor;
-// }
+void problem_set_smallest_origin_distance_from_nodes(Problem *problem) {
+    //Definir distancia da origem sendo 0
+    GraphNode *node = (GraphNode *) vector_get(problem->graph_nodes, 0);
+    graph_node_set_dist_origin(node, 0.0);
+    //Definir as distancias 
+    for (int i = 0; i < vector_size(node->connections); i++) {
+        Connection *c = (Connection *) vector_get(node->connections, i);
+        GraphNode *n = (GraphNode *) vector_get(problem->graph_nodes, connection_get_neighbor(c));
+        graph_node_set_dist_origin(n, connection_get_distance(c));
+    }
+
+    for (int i = 1; i < problem->num_nodes; i++) {
+        GraphNode *node = (GraphNode *) vector_get(problem->graph_nodes, i);
+        //Lembrar que sempre o no 1 ira se conectar com a origem
+        //verificar as conexoes
+        if (!graph_node_dist_origin_is_defined(node)) {
+            for (int j = 0; j < vector_size(node->connections); j++) {
+                Connection *c = (Connection *) vector_get(node->connections, j);
+                if (connection_get_neighbor(c) == 0) {
+                    //Define a distancia 
+                // graph_node_set_dist_origin(node, connection_get_distance(c));
+                //Ja foi definido então pode parar e ir para o proximo
+                    break;
+                } else {
+                    //Olhar o no
+                    GraphNode *n = (GraphNode *) vector_get(problem->graph_nodes, connection_get_neighbor(c));
+                    if(graph_node_dist_origin_is_defined(n)) {
+                        float distance = connection_get_distance(c) + graph_node_get_dist_origin(n);
+                        graph_node_set_dist_origin(node, distance);
+                        break;
+                    }
+                    
+                }
+            }
+        }
+    }
+}

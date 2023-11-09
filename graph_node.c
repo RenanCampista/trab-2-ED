@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph_node.h"
-#include "connection.h"
 
 GraphNode *graph_node_construct(int node_number) {
     GraphNode *graph_node = malloc(sizeof(GraphNode));
@@ -12,12 +11,16 @@ GraphNode *graph_node_construct(int node_number) {
 }
 
 void graph_node_destruct(GraphNode *graph_node) {
-    vector_destruct(graph_node->connections);
+    vector_destroy(graph_node->connections);
     free(graph_node);
 }
 
 int graph_node_get_node_number(GraphNode *graph_node) {
     return graph_node->node_number;
+}
+
+float graph_node_get_dist_origin(GraphNode *graph_node) {
+    return graph_node->dist_origin;
 }
 
 void graph_node_set_dist_origin(GraphNode *graph_node, float dist_origin) {
@@ -26,4 +29,8 @@ void graph_node_set_dist_origin(GraphNode *graph_node, float dist_origin) {
 
 void graph_node_add_connection(GraphNode *graph_node, Connection *connection) {
     vector_push_back(graph_node->connections, connection);
+}
+
+int graph_node_dist_origin_is_defined(GraphNode *graph_node) {
+    return graph_node->dist_origin != DISTANCE_NOT_DEFINED;
 }
