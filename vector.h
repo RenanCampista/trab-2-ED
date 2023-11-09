@@ -20,6 +20,6 @@ int vector_binary_search(Vector *v, data_type val);
 void vector_reverse(Vector *v);
 Vector *vector_copy(Vector *v);
 void vector_clear(Vector *v);
-void vector_destroy(Vector *v, void (*destroy_fn)(data_type));
+void vector_destroy(Vector *v);
 
 #endif // _VECTOR_H_

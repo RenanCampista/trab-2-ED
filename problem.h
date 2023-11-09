@@ -1,6 +1,16 @@
-#if !defined(_PROBLEM_H_)
-#define _PROBLEM_H_
+// problem.h
+#ifndef PROBLEM_H
+#define PROBLEM_H
 
+#include "vector.h"
 
+typedef struct {
+    int num_nodes;
+    Vector *graph_nodes;
+} Problem;
 
-#endif // _PROBLEM_H_
+Problem *problem_create(int num_nodes);
+void problem_destroy(Problem *problem);
+Problem *problem_data_read(const char *filename);
+
+#endif

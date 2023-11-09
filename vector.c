@@ -157,10 +157,7 @@ Vector *vector_copy(Vector *v) {
     return copy;
 }
 
-void vector_destroy(Vector *v, void (*destroy_fn)(data_type)) {
-    for (int i = 0; i < v->size; i++)
-        destroy_fn(v->data[i]);
-
+void vector_destroy(Vector *v) {
     free(v->data);
     free(v);
 }

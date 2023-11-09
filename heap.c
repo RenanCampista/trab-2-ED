@@ -2,10 +2,7 @@
 #include <stdlib.h>
 #include "heap.h"
 
-typedef struct {
-    void *data;
-    double priority;
-} HeapNode;
+
 
 struct Heap {
     Vector *nodes;
@@ -24,7 +21,7 @@ void heap_destroy(Heap *heap, void (*destroy_fn)(data_type)) {
         for (int i = 0; i < vector_size(heap->nodes); i++)
             destroy_fn(vector_get(heap->nodes, i));
     }
-    vector_destroy(heap->nodes, NULL);
+    vector_destroy(heap->nodes);
     free(heap);
 }
 
@@ -32,30 +29,57 @@ void  swap_nodes(Heap *heap, int i, int j) {
     vector_swap(heap->nodes, i, j);
 }
 
+//Heap for min priority
 void heapify_down(Heap *heap, int idx) {
-    int max = idx;
+    int min = idx;
     int left_child = 2 * idx + 1;
     int right_child = 2 * idx + 2;
 
-    if (left_child < vector_size(heap->nodes) && ((HeapNode*)vector_get(heap->nodes, left_child))->priority > ((HeapNode*)vector_get(heap->nodes, max))->priority)
-        max = left_child;
+    if (left_child < vector_size(heap->nodes) && ((HeapNode*)vector_get(heap->nodes, left_child))->priority < ((HeapNode*)vector_get(heap->nodes, min))->priority)
+        min = left_child;
 
-    if (right_child < vector_size(heap->nodes) && ((HeapNode*)vector_get(heap->nodes, right_child))->priority > ((HeapNode*)vector_get(heap->nodes, max))->priority)
-        max = right_child;
+    if (right_child < vector_size(heap->nodes) && ((HeapNode*)vector_get(heap->nodes, right_child))->priority < ((HeapNode*)vector_get(heap->nodes, min))->priority)
+        min = right_child;
 
-    if (max != idx) {
-        swap_nodes(heap, idx, max);
-        heapify_down(heap, max);
+    if (min != idx) {
+        swap_nodes(heap, idx, min);
+        heapify_down(heap, min);
     }
 }
 
 void heapify_up(Heap *heap, int idx) {
     int parent = (idx - 1) / 2;
-    if ((parent >=0) && (((HeapNode*)vector_get(heap->nodes, idx))->priority > ((HeapNode*)vector_get(heap->nodes, parent))->priority)) {
+    if ((parent >=0) && (((HeapNode*)vector_get(heap->nodes, idx))->priority < ((HeapNode*)vector_get(heap->nodes, parent))->priority)) {
         swap_nodes(heap, idx, parent);
         heapify_up(heap, parent);
     }
 }
+
+//Heap for max priority
+// void heapify_down(Heap *heap, int idx) {
+//     int max = idx;
+//     int left_child = 2 * idx + 1;
+//     int right_child = 2 * idx + 2;
+
+//     if (left_child < vector_size(heap->nodes) && ((HeapNode*)vector_get(heap->nodes, left_child))->priority > ((HeapNode*)vector_get(heap->nodes, max))->priority)
+//         max = left_child;
+
+//     if (right_child < vector_size(heap->nodes) && ((HeapNode*)vector_get(heap->nodes, right_child))->priority > ((HeapNode*)vector_get(heap->nodes, max))->priority)
+//         max = right_child;
+
+//     if (max != idx) {
+//         swap_nodes(heap, idx, max);
+//         heapify_down(heap, max);
+//     }
+// }
+
+// void heapify_up(Heap *heap, int idx) {
+//     int parent = (idx - 1) / 2;
+//     if ((parent >=0) && (((HeapNode*)vector_get(heap->nodes, idx))->priority > ((HeapNode*)vector_get(heap->nodes, parent))->priority)) {
+//         swap_nodes(heap, idx, parent);
+//         heapify_up(heap, parent);
+//     }
+// }
 
 void heap_push(Heap *heap, data_type data, double priority) {
     HeapNode *node = (HeapNode *)calloc(1, sizeof(HeapNode));
@@ -81,4 +105,10 @@ data_type heap_pop(Heap *heap) {
 
 int heap_is_empty(Heap *heap) {
     return vector_size(heap->nodes) == 0;
+}
+
+HeapNode heap_top(Heap *heap) {
+    if (vector_size(heap->nodes) == 0)
+        exit(printf("Error: heap_top: heap is empty.\n"));
+    return *((HeapNode*)vector_get(heap->nodes, 0));
 }
