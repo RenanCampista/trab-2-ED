@@ -2,12 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Path *path_create(float dist[], int parent[], int dest) {
+Path *path_create(Vector *dist, int parent[], int dest) {
     Path *path = (Path *)calloc(1, sizeof(Path));
     if (path == NULL)
         exit(printf("Error: bla bla bla\n"));
     path->nodes = vector_construct();
-    path->cost = dist[dest];
+    path->cost = vector_get(dist, dest) == NULL ? -1 : *(float *)vector_get(dist, dest);
+    //dist[dest];
 
     int current = dest;
     while (current != -1) {

@@ -7,7 +7,7 @@ typedef struct Path {
     float cost;    // Custo total do caminho
 } Path;
 
-Path *path_create(float dist[], int parent[], int dest);
+Path *path_create(Vector *dist, int parent[], int dest);
 void path_destroy(Path *path);
 void path_print(Path *path);
 
