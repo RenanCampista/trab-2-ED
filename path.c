@@ -2,20 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Path *path_create(Vector *dist, int parent[], int dest) {
+Path *path_create(Vector *dist, Vector *parent, int dest) {
     Path *path = (Path *)calloc(1, sizeof(Path));
     if (path == NULL)
         exit(printf("Error: bla bla bla\n"));
     path->nodes = vector_construct();
     path->cost = vector_get(dist, dest) == NULL ? -1 : *(float *)vector_get(dist, dest);
-    //dist[dest];
 
     int current = dest;
     while (current != -1) {
         int* copy = (int*)malloc(sizeof(int));
         *copy = current;
         vector_push_back(path->nodes, copy);
-        current = parent[current];
+        current = vector_get(parent, current) == NULL ? -1 : *(int *)vector_get(parent, current);
     }
 
     return path;
