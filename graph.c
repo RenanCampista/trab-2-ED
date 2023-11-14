@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
 #include "graph.h"
@@ -46,7 +45,7 @@ Connection *graph_get_connection(Graph *graph, int idx_neighbor, int idx_connect
     return node_get_connection(n, idx_connection);
 }
 
-int graph_get_num_connections_from_node(Graph *graph, int idx_neighbor) {
-    Node *n = (Node *) vector_get(graph->nodes, idx_neighbor);
+int graph_get_num_connections_from_node(Graph *graph, int idx) {
+    Node *n = (Node *) vector_get(graph->nodes, idx);
     return node_get_num_connections(n);
 }

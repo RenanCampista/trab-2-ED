@@ -2,23 +2,59 @@
 #define _NODE_H_
 #include "vector.h"
 
-/*
-Em teoria dos grafos, uma lista de adjacência, estrutura de adjacência ou dicionário é a representação de todas arestas ou arcos de um grafo em uma lista.
-
-*/
-
 typedef struct Connection Connection;
 typedef struct Node Node;
 struct Node {
     Vector* connections;
 };
 
+/**
+ * @brief Cria um novo nó.
+ * @return Ponteiro para o novo nó.
+*/
 Node *node_construct();
+
+/**
+ * @brief Destrói um nó, liberando a memória alocada.
+ * @param node Ponteiro para o nó a ser destruído.
+*/
 void node_destruct(data_type node);
+
+/**
+ * @brief Adiciona uma conexão ao nó.
+ * @param node Ponteiro para o nó.
+ * @param neighbor O nó vizinho.
+ * @param weight O peso da conexão.
+*/
 void node_add_connection(Node* node, int neighbor, float weight);
+
+/**
+ * @brief Retorna uma conexão do nó.
+ * @param node Ponteiro para o nó.
+ * @param idx O índice da conexão.
+ * @return Ponteiro para a conexão.
+*/
 Connection *node_get_connection(Node *node, int idx);
+
+/**
+ * @brief Retorna o número do vizinho de uma conexão.
+ * @param connection Ponteiro para a conexão.
+ * @return O número do vizinho.
+*/
 int connection_get_neighbor(Connection *connection);
+
+/**
+ * @brief Retorna o peso de uma conexão.
+ * @param connection Ponteiro para a conexão.
+ * @return O peso da conexão.
+*/
 float connection_get_weight(Connection *connection);
+
+/**
+ * @brief Retorna o número de conexões de um nó.
+ * @param node Ponteiro para o nó.
+ * @return O número de conexões.
+*/
 int node_get_num_connections(Node *node);
 
 #endif // _NODE_H_

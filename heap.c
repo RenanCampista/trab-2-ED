@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "heap.h"
 
+struct HeapNode{
+    void *data;
+    float priority;
+};
 
 struct Heap {
     Vector *nodes;
@@ -117,14 +121,4 @@ HeapNode heap_top(Heap *heap) {
     if (vector_size(heap->nodes) == 0)
         exit(printf("Error: heap_top: heap is empty.\n"));
     return *((HeapNode*)vector_get(heap->nodes, 0));
-}
-
-data_type heap_top_data(Heap *heap) {
-    if (vector_size(heap->nodes) == 0)
-        exit(printf("Error: heap_top_data: heap is empty.\n"));
-    return ((HeapNode*)vector_get(heap->nodes, 0))->data;
-}
-
-data_type heap_node_get_data (HeapNode *node) {
-    return node->data;
 }

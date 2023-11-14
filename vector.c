@@ -51,17 +51,6 @@ void vector_push_back(Vector *v, data_type val) {
     v->size++;
 }
 
-int vector_find(Vector *v, data_type val) {
-    int i = 0;
-    while (i < vector_size(v)) {
-        if (vector_get(v, i) == val)
-            return i;
-        i++;
-    }
-
-    return -1;
-}
-
 data_type vector_remove(Vector *v, int i) {
     if (i >= v->size || i < 0)
         exit(printf("Error: vector_remove: invalid index %d for vector with size %d.\n", i, v->size));
