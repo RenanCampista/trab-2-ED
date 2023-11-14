@@ -7,7 +7,7 @@ typedef struct Graph Graph;
 
 struct Graph {
     int num_nodes;
-    AdjacencyList* edges; //arestas
+    //AdjacencyList* edges; //arestas
     //Tentar usar um vector para salvar as arestas
     Vector *edge;
 };
