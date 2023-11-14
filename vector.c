@@ -30,8 +30,8 @@ int vector_size(Vector *v) {
 }
 
 data_type vector_get(Vector *v, int i) {
-    if (i >= vector_size(v) || i < 0) return NULL;
-        // exit(printf("Error: vector_get: invalid index %d for vector with size %d.\n", i, vector_size(v)));
+    if (i >= vector_size(v) || i < 0)
+        exit(printf("Error: vector_get: invalid index %d for vector with size %d.\n", i, vector_size(v)));
     return v->data[i];
 }
 

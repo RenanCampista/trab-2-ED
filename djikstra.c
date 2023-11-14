@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "djikstra.h"
-#include "graph_node.h"
 #include <float.h>
 
 
@@ -24,92 +23,76 @@ O loop principal do algoritmo consiste nos passos descritos a seguir. O nó de o
 
 */
 
-Vector *djikstra_solve(Problem *problem) {
-    Vector *visited = vector_construct();
-    Vector *predecessors = vector_construct();
+int min_distance(float dist[], int sptSet[], int num_nodes) {
+    float min = FLT_MAX; 
+    int min_index;
+    
+    for (int v = 0; v < num_nodes; v++) {
+        if (!sptSet[v] && dist[v] <= min) {
+            min = dist[v];
+            min_index = v;
+        }
+    }
+    
+    return min_index;
+}
+
+void printPath(int parent[], int j) {
+    if (parent[j] == -1) {
+        printf("%d", j);
+        return;
+    }
+    
+    printPath(parent, parent[j]);
+    printf(" -> %d", j);
+}
+
+void printSolution(float dist[], int parent[], int src, int num_nodes) {
+    printf("Caminhos mais curtos a partir da origem %d:\n", src);
+    for (int i = 0; i < num_nodes; i++) {
+        if (i != src) {
+
+            printPath(parent, i);
+            printf(": %.2f\n", dist[i]);
+
+        }
+    }
+}
+
+void djikstra_solve(Problem *problem) {
+    float dist[problem->num_nodes];
+    int sptSet[problem->num_nodes];
+    int parent[problem->num_nodes];
+
     for (int i = 0; i < problem->num_nodes; i++) {
-        vector_push_back(visited, 0);
-        vector_push_back(predecessors, (int *)-1);
+        dist[i] = FLT_MAX;
+        sptSet[i] = 0;
+        parent[i] = -1;
     }
 
-    // float custo[problem->num_nodes];
-    // int rotas[problem->num_nodes];
-    // for (int i = 0; i < problem->num_nodes; i++) {
-    //     custo[i] = FLT_MAX;
-    //     rotas[i] = -1;
-    // }
-    // custo[0] = 0;
-    // rotas[0] = 0;
-    Heap *not_visited = heap_construct();
-    GraphNode *origin = (GraphNode *) vector_get(problem->graph_nodes, 0);
-    heap_push(not_visited, origin, 0);
+    dist[0] = 0;
 
-    while(heap_is_empty(not_visited)) {
-        int *r = (int *) calloc(1, sizeof(int));
-        *r = -1;
-        for (int i = 0; i < problem->num_nodes; i++) {
-            if (vector_get(visited, i) == 0 && (*r < 0 || graph_node_get_dist_origin((GraphNode *) vector_get(problem->graph_nodes, i)) < graph_node_get_dist_origin((GraphNode *) vector_get(problem->graph_nodes, *r)))) {
-               *r = i;
+    for (int count = 0; count < problem->num_nodes - 1; count++) {
+        int u = min_distance(dist, sptSet, problem->num_nodes);
+        sptSet[u] = 1;
+
+        for (int v = 0; v < problem->num_nodes; v++) {
+            if (!sptSet[v] && graph_get(problem->graph, v, u) && dist[u] != FLT_MAX && dist[u] + graph_get(problem->graph, v, u) < dist[v]) {
+                dist[v] = dist[u] + graph_get(problem->graph, v, u);
+                parent[v] = u;
             }
         }
-
-        if (*r == -1) break;
-        vector_set(visited, *r, (int *)1);
-
-        for (int i = 0; i < problem->num_nodes; i++) {
-            GraphNode *node = (GraphNode *) vector_get(problem->graph_nodes, i);
-
-        }
     }
-    return predecessors;
+    printSolution(dist, parent, 0, problem->num_nodes);
 }
 
 
 
+/*
+            if (!sptSet[v] && graph_get(problem->graph, u, v) && dist[u] != FLT_MAX && dist[u] + graph_get(problem->graph, u, v) < dist[v]) {
+                dist[v] = dist[u] + graph_get(problem->graph, u, v);
+                parent[v] = u;
+            }
 
-// Vector *djikstra_solve(Problem *problem) {
-//     printf("chehou aqui\n");
-//     problem_set_smallest_origin_distance_from_nodes(problem);
 
-//     Vector *visited = vector_construct();
-
-//     Heap *not_visited = heap_construct();
-//     for (int i = 0; i < problem->num_nodes; i++) {
-//         GraphNode *node = (GraphNode *) vector_get(problem->graph_nodes, i);
-//         heap_push(not_visited, node, graph_node_get_dist_origin(node));
-//         vector_push_back(visited, 0);
-//     }
-
-//     //definir a primeira posicao como visitado
-//     vector_set(visited, 0, (int *)1);
- 
-//     Vector *predecessors = vector_construct();
-
-//     while(!heap_is_empty(not_visited)) {
-//         GraphNode *node = (GraphNode *) heap_top(not_visited).data;
-//         heap_pop(not_visited);
-//         vector_set(visited, graph_node_get_node_number(node), (int *)1);
-       
-//         for (int i = 0; i < vector_size(node->connections); i++) {
-//             Connection *connection = (Connection *) vector_get(node->connections, i);
-//             GraphNode *neighbor = (GraphNode *) vector_get(problem->graph_nodes, connection_get_neighbor(connection));
-             
-//             if (vector_get(visited, graph_node_get_node_number(neighbor)) == 0) {
-//                 float new_distance = graph_node_get_dist_origin(node) + connection_get_distance(connection);
-//                 if (new_distance < graph_node_get_dist_origin(neighbor)) {
-//                     graph_node_set_dist_origin(neighbor, new_distance);
-//                     //problema ta aqui
-//                     vector_set(predecessors, graph_node_get_node_number(neighbor), node);
-                    
-//                     printf("passou");
-//                     heap_push(not_visited, neighbor, new_distance);
-//                 }
-//             }
-//         }
-//     }
-
-//     vector_destroy(visited);
-//     heap_destroy(not_visited, NULL);
-
-//     return predecessors;
-// }
+*/

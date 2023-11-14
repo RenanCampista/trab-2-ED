@@ -6,8 +6,8 @@
 
 #include "heap.h"
 #include "vector.h"
-#include "connection.h"
 
-Vector *djikstra_solve(Problem *problem);
 
+//Vector *djikstra_solve(Problem *problem);
+void djikstra_solve(Problem *problem);
 #endif // _DJIKSTRA_H_

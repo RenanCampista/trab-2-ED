@@ -3,10 +3,11 @@
 #define PROBLEM_H
 
 #include "vector.h"
+#include "graph.h"
 
 typedef struct {
     int num_nodes;
-    Vector *graph_nodes;
+    Graph *graph;
 } Problem;
 
 Problem *problem_create(int num_nodes);
