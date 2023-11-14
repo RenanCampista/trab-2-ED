@@ -42,6 +42,7 @@ Vector* djikstra_solve(Problem *problem) {
     while(!heap_is_empty(not_visited)) {
         int *u = (int*)heap_pop(not_visited);
         if(sptSet[*u]) {
+            free(u);
             continue;
         }
 
