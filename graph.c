@@ -8,10 +8,10 @@ Graph *graph_construct(int num_nodes) {
     if (g == NULL)
         exit(printf("Error: graph_construct failed to allocate memory.\n"));
     g->V = num_nodes;
-    g->array = (AdjList*)malloc(num_nodes * sizeof(AdjList));
+    g->array = (AdjacencyList*)malloc(num_nodes * sizeof(AdjacencyList));
 
     for (int i = 0; i < num_nodes; ++i) {
-        g->array[i] = *initAdjList();
+        g->array[i] = *initAdjacencyList();
     }
 
     return g;
@@ -25,22 +25,11 @@ void graph_destruct(Graph *g) {
     free(g);
 }
 
-// Graph* createGraph(int V) {
-//     Graph* graph = (Graph*)malloc(sizeof(Graph));
-//     graph->V = V;
-//     graph->array = (AdjList*)malloc(V * sizeof(AdjList));
-
-//     for (int i = 0; i < V; ++i) {
-//         graph->array[i] = *initAdjList();
-//     }
-
-//     return graph;
-// }
 
 // Adiciona uma aresta ao grafo
 void graph_add_edge(Graph *graph, int src, int dest, float weight){
-    AdjListNode* newNode = newAdjListNode(dest, weight);
-    addNode(&graph->array[src], newNode);
+    Node* new_Node = newNode(dest, weight);
+    addNode(&graph->array[src], new_Node);
 }
 
 void graph_read(const char* filename, Graph* graph) {

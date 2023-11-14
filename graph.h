@@ -1,12 +1,12 @@
 #if !defined(_GRAPH_H_)
 #define _GRAPH_H_
-#include "adj_list.h"
+#include "adjacency_list.h"
 
 typedef struct Graph Graph;
 
 struct Graph {
     int V;
-    AdjList* array;
+    AdjacencyList* array;
 };
 
 Graph *graph_construct(int num_nodes);

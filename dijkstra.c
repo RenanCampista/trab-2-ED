@@ -62,7 +62,7 @@ void djikstra_solve(Problem *problem) {
         Vector* nodes = problem->graph->array[u].nodes;
         for (int i = 0; i < vector_size(nodes); i++) {
             //AdjListNode* currentNode = (AdjListNode*)nodes->data[i];
-            AdjListNode *currentNode = (AdjListNode*)vector_get(nodes, i);
+            Node *currentNode = (Node*)vector_get(nodes, i);
             int v = currentNode->dest;
             if (!sptSet[v] && dist[u] != FLT_MAX && (dist[u] + currentNode->weight < dist[v])) {
                 dist[v] = dist[u] + currentNode->weight;
