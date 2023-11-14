@@ -100,11 +100,12 @@ data_type heap_pop(Heap *heap) {
     if (vector_size(heap->nodes) == 0)
         exit(printf("Error: heap_pop: heap is empty.\n"));
 
-    data_type data = ((HeapNode*)vector_get(heap->nodes, 0))->data;
+    HeapNode *node = (HeapNode *)vector_get(heap->nodes, 0);
+    data_type data = node->data;
+    heap_node_destroy(node, free);
     vector_set(heap->nodes, 0, vector_get(heap->nodes, vector_size(heap->nodes) - 1));
     vector_pop_back(heap->nodes);
     heapify_down(heap, 0);
-
     return data;
 }
 
