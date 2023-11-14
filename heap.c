@@ -102,7 +102,7 @@ data_type heap_pop(Heap *heap) {
 
     HeapNode *node = (HeapNode *)vector_get(heap->nodes, 0);
     data_type data = node->data;
-    heap_node_destroy(node, free);
+    heap_node_destroy(node, NULL);
     vector_set(heap->nodes, 0, vector_get(heap->nodes, vector_size(heap->nodes) - 1));
     vector_pop_back(heap->nodes);
     heapify_down(heap, 0);

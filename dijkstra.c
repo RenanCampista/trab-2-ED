@@ -35,9 +35,9 @@ Vector* djikstra_solve(Problem *problem) {
 
     dist[0] = 0;
     Heap *not_visited = heap_construct();
-    int *zero = (int*)malloc(sizeof(int));
-    *zero = 0;
-    heap_push(not_visited, zero, 0);
+    int *origin = (int*)malloc(sizeof(int));
+    *origin = 0;
+    heap_push(not_visited, origin, 0);
 
     while(!heap_is_empty(not_visited)) {
         int *u = (int*)heap_pop(not_visited);
@@ -48,14 +48,15 @@ Vector* djikstra_solve(Problem *problem) {
         sptSet[*u] = 1;
         for (int i = 0; i < graph_get_num_connections_from_node(problem->graph, *u); i++) {
             Connection *current_connection = graph_get_connection(problem->graph, *u, i);
-            int *v = (int*)malloc(sizeof(int));
-            *v = connection_get_neighbor(current_connection);
+            int v = connection_get_neighbor(current_connection);
             int weight = connection_get_weight(current_connection);
-            if (!sptSet[*v] && dist[*u] != FLT_MAX && (dist[*u] + weight < dist[*v])) {
-                dist[*v] = dist[*u] + weight;
-                parent[*v] = *u;
-                heap_push(not_visited, v, dist[*v]);
-            }
+            if (!sptSet[v] && dist[*u] != FLT_MAX && (dist[*u] + weight < dist[v])) {
+                dist[v] = dist[*u] + weight;
+                parent[v] = *u;
+                int *value = (int*)malloc(sizeof(int));
+                *value = v;
+                heap_push(not_visited, value, dist[v]);
+            } 
         }
         free(u);
         
