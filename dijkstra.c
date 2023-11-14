@@ -53,7 +53,7 @@ void printSolution(float dist[], int parent[], int src, int num_nodes) {
 }
 
 // Função que implementa o algoritmo de Dijkstra
-void djikstra_solve(Problem *problem) {
+Vector* djikstra_solve(Problem *problem) {
     int V = problem->num_nodes;
     float dist[V];
     int sptSet[V];
@@ -82,7 +82,7 @@ void djikstra_solve(Problem *problem) {
         }
     }
 
-    printSolution(dist, parent, 0, V);
+    //printSolution(dist, parent, 0, V);
 
     // Vector *paths = vector_construct();
     // for (int i = 0; i < V; i++) {
@@ -94,7 +94,13 @@ void djikstra_solve(Problem *problem) {
     //     vector_push_back(paths, p);
     // }
 
-    // return paths;
+    Vector *paths = vector_construct();
+    for (int i = 1; i < V; i++) {
+        Path *p = path_create(dist, parent, i);
+        vector_push_back(paths, p);
+    }
+
+    return paths;
     
 }
 

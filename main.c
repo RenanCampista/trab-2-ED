@@ -15,12 +15,12 @@ void print_and_destroy_paths(Vector *paths)  {
 
 int main() {
     Problem *problem_data;
-   // Vector *paths;
+    Vector *paths;
 
     problem_data = problem_data_read("in.txt");
 
-     djikstra_solve(problem_data);
-    //print_and_destroy_paths(paths);
+    paths = djikstra_solve(problem_data);
+    print_and_destroy_paths(paths);
     problem_destroy(problem_data);
 
 
