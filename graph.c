@@ -21,7 +21,6 @@ void graph_destruct(Graph *graph) {
     free(graph);
 }
 
-// Adiciona uma aresta ao grafo
 void graph_add_node(Graph *graph, int src, int neighbor, float weight){
     Node *n = (Node *) vector_get(graph->nodes, src);
     node_add_connection(n, neighbor, weight);

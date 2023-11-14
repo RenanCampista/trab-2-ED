@@ -11,6 +11,4 @@ Path *path_create(float dist[], int parent[], int dest);
 void path_destroy(Path *path);
 void path_print(Path *path);
 
-void path_add_node (Path *path, int *parent);
-
 #endif // _PATH_H_
