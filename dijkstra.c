@@ -59,12 +59,12 @@ void djikstra_solve(Problem *problem) {
         int u = minDistance(dist, sptSet, V);
         sptSet[u] = 1;
 
-        Vector* nodes = problem->graph->array[u].nodes;
-        for (int i = 0; i < vector_size(nodes); i++) {
-            Node *currentNode = (Node*)vector_get(nodes, i);
-            int v = currentNode->dest;
-            if (!sptSet[v] && dist[u] != FLT_MAX && (dist[u] + currentNode->weight < dist[v])) {
-                dist[v] = dist[u] + currentNode->weight;
+        for (int i = 0; i < graph_get_num_nodes_from_edge(problem->graph, u); i++) {
+            Node *currentNode = graph_get_node(problem->graph, u, i);
+            int v = node_get_dist(currentNode);
+            int weight = node_get_weight(currentNode);
+            if (!sptSet[v] && dist[u] != FLT_MAX && (dist[u] + weight < dist[v])) {
+                dist[v] = dist[u] + weight;
                 parent[v] = u;
             }
         }

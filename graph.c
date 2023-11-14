@@ -8,26 +8,26 @@ Graph *graph_construct(int num_nodes) {
     if (g == NULL)
         exit(printf("Error: graph_construct failed to allocate memory.\n"));
     g->num_nodes = num_nodes;
-    g->array = (AdjacencyList*)malloc(num_nodes * sizeof(AdjacencyList));
+    g->edges = (AdjacencyList*)malloc(num_nodes * sizeof(AdjacencyList));
 
     for (int i = 0; i < num_nodes; ++i) {
-        g->array[i] = *initAdjacencyList();
+        g->edges[i] = *adjacency_list_construct();
     }
 
     return g;
 }
 
 void graph_destruct(Graph *g) {
-    for (int i = 0; i < g->num_nodes; i++) {
-        vector_destroy(g->array[i].nodes);
-    }
-    free(g->array);
+    // for (int i = 0; i < g->num_nodes; i++) {
+    //     vector_destroy(g->edges[i].nodes);
+    // }
+    free(g->edges);
     free(g);
 }
 
 // Adiciona uma aresta ao grafo
 void graph_add_edge(Graph *graph, int src, int dest, float weight){
-    adjacency_list_add_node(&graph->array[src], dest, weight);
+    adjacency_list_add_node(&graph->edges[src], dest, weight);
 }
 
 void graph_read(Graph* graph, FILE *file) {
@@ -45,34 +45,10 @@ void graph_read(Graph* graph, FILE *file) {
     }
 }
 
+Node *graph_get_node(Graph *graph, int idx_egde, int idx_node) {
+    return adjacency_list_get_node(&graph->edges[idx_egde], idx_node);
+}
 
-// void graph_read(const char* filename, Graph* graph) {
-//     FILE* file = fopen(filename, "r");
-//     if (file == NULL) {
-//         perror("Erro ao abrir o arquivo");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     int num_nodes;
-//     fscanf(file, "%d", &num_nodes);
-
-//     // Atualiza o número de vértices no grafo
-//     graph->num_nodes = num_nodes;
-
-//     for (int i = 0; i < num_nodes; ++i) {
-//         int dest;
-//         float weight;
-//         char c;
-//         //fscanf(file, "%d", &src);
-
-//         while (1) {
-//             fscanf(file, "%d %f%c", &dest, &weight, &c);
-//             graph_add_edge(graph, i, dest, weight);
-//             if (c != ' ') {
-//                 break;
-//             }
-//         }
-//     }
-
-//     fclose(file);
-// }
+int graph_get_num_nodes_from_edge(Graph *graph, int idx_edge) {
+    return adjacency_list_get_num_nodes(&graph->edges[idx_edge]);
+}
