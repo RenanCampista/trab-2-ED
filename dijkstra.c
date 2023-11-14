@@ -24,13 +24,17 @@ int minDistance(float dist[], int sptSet[], int V) {
 Vector* djikstra_solve(Problem *problem) {
     int V = problem->num_nodes;
     float dist[V];
-    int sptSet[V];
     int parent[V];
+
+    Vector *visited = vector_construct();
 
     for (int i = 0; i < V; i++) {
         dist[i] = FLT_MAX;
-        sptSet[i] = 0;
         parent[i] = -1;
+
+        int *visited_value = (int*)malloc(sizeof(int));
+        *visited_value = 0;
+        vector_push_back(visited, visited_value);
     }
 
     dist[0] = 0;
@@ -41,17 +45,20 @@ Vector* djikstra_solve(Problem *problem) {
 
     while(!heap_is_empty(not_visited)) {
         int *u = (int*)heap_pop(not_visited);
-        if(sptSet[*u]) {
+
+        int *visited_value = vector_get(visited, *u);
+        if(visited_value == NULL || *visited_value == 1) {
             free(u);
             continue;
         }
+        *visited_value = 1;
 
-        sptSet[*u] = 1;
         for (int i = 0; i < graph_get_num_connections_from_node(problem->graph, *u); i++) {
             Connection *current_connection = graph_get_connection(problem->graph, *u, i);
             int v = connection_get_neighbor(current_connection);
             int weight = connection_get_weight(current_connection);
-            if (!sptSet[v] && dist[*u] != FLT_MAX && (dist[*u] + weight < dist[v])) {
+            int *visited_status = vector_get(visited, v);
+            if (!(*visited_status) && dist[*u] != FLT_MAX && (dist[*u] + weight < dist[v])) {
                 dist[v] = dist[*u] + weight;
                 parent[v] = *u;
                 int *value = (int*)malloc(sizeof(int));
@@ -60,23 +67,7 @@ Vector* djikstra_solve(Problem *problem) {
             } 
         }
         free(u);
-        
     }
-
-    // for (int count = 0; count < V - 1; count++) {
-    //     int u = minDistance(dist, sptSet, V);
-    //     sptSet[u] = 1;
-
-    //     for (int i = 0; i < graph_get_num_connections_from_node(problem->graph, u); i++) {
-    //         Connection *current_connection = graph_get_connection(problem->graph, u, i);
-    //         int v = connection_get_neighbor(current_connection);
-    //         int weight = connection_get_weight(current_connection);
-    //         if (!sptSet[v] && dist[u] != FLT_MAX && (dist[u] + weight < dist[v])) {
-    //             dist[v] = dist[u] + weight;
-    //             parent[v] = u;
-    //         }
-    //     }
-    // }
 
     Vector *paths = vector_construct();
     for (int i = 1; i < V; i++) {
@@ -85,7 +76,6 @@ Vector* djikstra_solve(Problem *problem) {
     }
     
     heap_destroy(not_visited, free);
-
+    vector_destroy(visited, free);
     return paths;
-    
 }
