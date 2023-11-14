@@ -18,7 +18,6 @@ int main() {
     Vector *paths;
 
     problem_data = problem_data_read("in.txt");
-
     paths = djikstra_solve(problem_data);
     print_and_destroy_paths(paths);
     problem_destroy(problem_data);

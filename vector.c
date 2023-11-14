@@ -146,11 +146,6 @@ Vector *vector_copy(Vector *v) {
     return copy;
 }
 
-// void vector_destroy(Vector *v) {
-//     free(v->data);
-//     free(v);
-// }
-
 void vector_destroy(Vector *v, void (*destructor)(data_type)) {
     if (destructor != NULL) {
         for (int i = 0; i < v->size; i++)

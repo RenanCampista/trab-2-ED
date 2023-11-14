@@ -6,20 +6,6 @@
 #include "path.h"
 #include "heap.h"
 
-int minDistance(float dist[], int sptSet[], int V) {
-    float min = FLT_MAX;
-    int min_index;
-
-    for (int v = 0; v < V; v++) {
-        if (!sptSet[v] && dist[v] < min) {
-            min = dist[v];
-            min_index = v;
-        }
-    }
-
-    return min_index;
-}
-
 Vector* djikstra_solve(Problem *problem) {
     Vector* dist = vector_construct();
     Vector *parent = vector_construct();
