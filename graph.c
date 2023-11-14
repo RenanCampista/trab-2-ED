@@ -27,6 +27,7 @@ void graph_destruct(Graph *g) {
 
 // Adiciona uma aresta ao grafo
 void graph_add_edge(Graph *graph, int src, int dest, float weight){
+    //Criar um Adjacenc list e dps push_back
     adjacency_list_add_node(&graph->edges[src], dest, weight);
 }
 

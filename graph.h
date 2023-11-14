@@ -1,6 +1,7 @@
 #if !defined(_GRAPH_H_)
 #define _GRAPH_H_
 #include "adjacency_list.h"
+#include "vector.h"
 
 typedef struct Graph Graph;
 
@@ -8,6 +9,7 @@ struct Graph {
     int num_nodes;
     AdjacencyList* edges; //arestas
     //Tentar usar um vector para salvar as arestas
+    Vector *edge;
 };
 
 Graph *graph_construct(int num_nodes);

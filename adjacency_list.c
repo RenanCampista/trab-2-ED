@@ -8,8 +8,6 @@ struct Node {
     float weight;
 };
 
-
-
 // Cria um novo nó da lista de adjacência
 Node* node_construct(int dest, float weight) {
     Node* newNode = (Node*)malloc(sizeof(Node));
@@ -20,7 +18,6 @@ Node* node_construct(int dest, float weight) {
 
 // Inicializa uma lista de adjacência
 AdjacencyList* initAdjacencyList() {
-    //AdjacencyList* list = (AdjacencyList*)malloc(sizeof(AdjacencyList));
     AdjacencyList *list = (AdjacencyList *) calloc(1, sizeof(AdjacencyList));
     if (list == NULL)
         exit(printf("Error: adjacency_list_construct failed to allocate memory.\n"));
