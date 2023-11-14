@@ -18,16 +18,22 @@ Connection* connection_construct(int neighbor, float weight) {
 }
 
 Node *node_construct() {
-    Node *list = (Node *) calloc(1, sizeof(Node));
-    if (list == NULL)
+    Node *node = (Node *) calloc(1, sizeof(Node));
+    if (node == NULL)
         exit(printf("Error: node_construct failed to allocate memory.\n"));
-    list->connections = vector_construct();
-    return list;
+    node->connections = vector_construct();
+    return node;
 }
 
-void node_add_connection(Node* list, int neighbor, float weight) {
+void node_destruct(data_type node) {
+    Node *n = (Node *) node;
+    vector_destroy(n->connections, free);
+    free(n);
+}
+
+void node_add_connection(Node* node, int neighbor, float weight) {
     Connection *new_connection = connection_construct(neighbor, weight);
-    vector_push_back(list->connections, new_connection);
+    vector_push_back(node->connections, new_connection);
 }
 
 Connection *node_get_connection(Node *node, int idx) {

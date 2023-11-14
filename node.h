@@ -14,7 +14,8 @@ struct Node {
 };
 
 Node *node_construct();
-void node_add_connection(Node* list, int neighbor, float weight);
+void node_destruct(data_type node);
+void node_add_connection(Node* node, int neighbor, float weight);
 Connection *node_get_connection(Node *node, int idx);
 int connection_get_neighbor(Connection *connection);
 float connection_get_weight(Connection *connection);

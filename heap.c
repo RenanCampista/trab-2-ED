@@ -20,7 +20,7 @@ void heap_destroy(Heap *heap, void (*destroy_fn)(data_type)) {
         for (int i = 0; i < vector_size(heap->nodes); i++)
             destroy_fn(vector_get(heap->nodes, i));
     }
-    vector_destroy(heap->nodes);
+    vector_destroy(heap->nodes, free);
     free(heap);
 }
 

@@ -10,7 +10,7 @@ void print_and_destroy_paths(Vector *paths)  {
         path_print(path); 
         path_destroy(path); 
     } 
-    vector_destroy(paths); 
+    vector_destroy(paths, NULL); 
 } 
 
 int main() {

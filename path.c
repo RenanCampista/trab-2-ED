@@ -21,7 +21,11 @@ Path *path_create(float dist[], int parent[], int dest) {
 }
 
 void path_destroy(Path *path) {
-    free(path->nodes);
+    for (int i = 0; i < vector_size(path->nodes); i++) {
+        int *num = (int *) vector_get(path->nodes, i);
+        free(num);
+    }
+    vector_destroy(path->nodes, NULL);
     free(path);
 }
 
