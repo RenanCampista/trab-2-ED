@@ -16,4 +16,5 @@ data_type heap_pop(Heap *heap);
 int heap_is_empty(Heap *heap);
 HeapNode heap_top(Heap *heap);
 data_type heap_node_get_data(HeapNode *node);
+
 #endif // _HEAP_H_

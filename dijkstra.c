@@ -21,13 +21,11 @@ int minDistance(float dist[], int sptSet[], int V) {
 }
 
 Vector* djikstra_solve(Problem *problem) {
-    int V = problem->num_nodes;
     Vector* dist = vector_construct();
-    //int parent[V];
     Vector *parent = vector_construct();
     Vector *visited = vector_construct();
 
-    for (int i = 0; i < V; i++) {
+    for (int i = 0; i < problem->num_nodes; i++) {
         float *dist_value = (float*)malloc(sizeof(float));
         *dist_value = FLT_MAX;
         vector_push_back(dist, dist_value);
@@ -68,9 +66,10 @@ Vector* djikstra_solve(Problem *problem) {
             float *dist_v_value = vector_get(dist, v);
             if (!(*visited_status) && *dist_u_value != FLT_MAX && (*dist_u_value + weight < *dist_v_value)) {
                 *dist_v_value = *dist_u_value + weight;
-               // parent[v] = *u;
+
                 int *parent_value = vector_get(parent, v);
                 *parent_value = *u;
+
                 int *value = (int*)malloc(sizeof(int));
                 *value = v;
                 heap_push(not_visited, value, *dist_v_value);
@@ -80,7 +79,7 @@ Vector* djikstra_solve(Problem *problem) {
     }
 
     Vector *paths = vector_construct();
-    for (int i = 1; i < V; i++) {
+    for (int i = 1; i < problem->num_nodes; i++) {
         Path *p = path_create(dist, parent, i);
         vector_push_back(paths, p);
     }

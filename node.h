@@ -21,5 +21,4 @@ int connection_get_neighbor(Connection *connection);
 float connection_get_weight(Connection *connection);
 int node_get_num_connections(Node *node);
 
-
 #endif // _NODE_H_
