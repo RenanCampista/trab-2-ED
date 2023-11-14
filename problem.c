@@ -26,9 +26,9 @@ Problem *problem_data_read(const char *filename) {
     int num_nodes;
     fscanf(file, "%d", &num_nodes);
     Problem *problem = problem_create(num_nodes);
+    //graph_read(filename, problem->graph);
+    graph_read(problem->graph, file);
     fclose(file);
-    graph_read(filename, problem->graph);
-
     return problem;
 }
 

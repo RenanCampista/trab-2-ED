@@ -25,7 +25,7 @@ Node* newNode(int dest, float weight);
 AdjacencyList* initAdjacencyList();
 
 // Adiciona um nó à lista de adjacência
-void addNode(AdjacencyList* list, Node* node);
+void adjacency_list_add_node(AdjacencyList* list, int dest, float weight);
 
 
 #endif // _ADJACENCY_LIST_H_

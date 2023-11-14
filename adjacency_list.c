@@ -4,7 +4,7 @@
 #include "adjacency_list.h"
 
 // Cria um novo nó da lista de adjacência
-Node* newNode(int dest, float weight) {
+Node* node_construct(int dest, float weight) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->dest = dest;
     newNode->weight = weight;
@@ -19,7 +19,8 @@ AdjacencyList* initAdjacencyList() {
 }
 
 // Adiciona um nó à lista de adjacência
-void addNode(AdjacencyList* list, Node* node) {
+void adjacency_list_add_node(AdjacencyList* list, int dest, float weight) {
     //pushBack(list->nodes, node);
-    vector_push_back(list->nodes, node);
+    Node *new_node = node_construct(dest, weight);
+    vector_push_back(list->nodes, new_node);
 }

@@ -5,17 +5,19 @@
 typedef struct Graph Graph;
 
 struct Graph {
-    int V;
+    int num_nodes;
     AdjacencyList* array;
 };
 
 Graph *graph_construct(int num_nodes);
-//Graph* createGraph(int V);
+
 void graph_destruct(Graph *g);
 
 // Adiciona uma aresta ao grafo
 void graph_add_edge(Graph *graph, int src, int dest, float weight);
 
-void graph_read(const char* filename, Graph* graph);
+//void graph_read(const char* filename, Graph* graph);
+
+void graph_read(Graph* graph, FILE *file);
 
 #endif // _GRAPH_H_
