@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <float.h>
 #include "dijkstra.h"
+#include "graph.h"
+#include "path.h"
 
 
 int minDistance(float dist[], int sptSet[], int V) {
@@ -26,6 +28,16 @@ void printPath(int parent[], int j) {
     
     printPath(parent, parent[j]);
     printf(" -> %d", j);
+}
+
+void return_numbers(int parent[], int *j, Path *p) {
+    if(parent[*j] == -1) {
+        path_add_node(p, j);
+        return;
+    }
+
+    return_numbers(parent, &parent[*j], p);
+    path_add_node(p, j);
 }
 
 void printSolution(float dist[], int parent[], int src, int num_nodes) {
@@ -59,10 +71,10 @@ void djikstra_solve(Problem *problem) {
         int u = minDistance(dist, sptSet, V);
         sptSet[u] = 1;
 
-        for (int i = 0; i < graph_get_num_nodes_from_edge(problem->graph, u); i++) {
-            Node *currentNode = graph_get_node(problem->graph, u, i);
-            int v = node_get_dist(currentNode);
-            int weight = node_get_weight(currentNode);
+        for (int i = 0; i < graph_get_num_connections_from_node(problem->graph, u); i++) {
+            Connection *current_connection = graph_get_connection(problem->graph, u, i);
+            int v = connection_get_neighbor(current_connection);
+            int weight = connection_get_weight(current_connection);
             if (!sptSet[v] && dist[u] != FLT_MAX && (dist[u] + weight < dist[v])) {
                 dist[v] = dist[u] + weight;
                 parent[v] = u;
@@ -71,6 +83,19 @@ void djikstra_solve(Problem *problem) {
     }
 
     printSolution(dist, parent, 0, V);
+
+    // Vector *paths = vector_construct();
+    // for (int i = 0; i < V; i++) {
+    //     Path *p = path_create();
+    //     int *k = malloc(sizeof(int));
+    //     *k = i;
+    //     return_numbers(parent, k, p);
+    //     p->cost = dist[i];
+    //     vector_push_back(paths, p);
+    // }
+
+    // return paths;
+    
 }
 
 

@@ -3,7 +3,6 @@
 #include "heap.h"
 
 
-
 struct Heap {
     Vector *nodes;
 };

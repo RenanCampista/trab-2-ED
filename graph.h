@@ -1,26 +1,20 @@
 #if !defined(_GRAPH_H_)
 #define _GRAPH_H_
-#include "adjacency_list.h"
+#include "node.h"
 #include "vector.h"
 
 typedef struct Graph Graph;
 
 struct Graph {
     int num_nodes;
-    //AdjacencyList* edges; //arestas
-    //Tentar usar um vector para salvar as arestas
-    Vector *edge;
+    Vector *nodes;
 };
 
 Graph *graph_construct(int num_nodes);
-
 void graph_destruct(Graph *g);
-
-// Adiciona uma aresta ao grafo
-void graph_add_edge(Graph *graph, int src, int dest, float weight);
-
+void graph_add_node(Graph *graph, int src, int neighbor, float weight);
 void graph_read(Graph* graph, FILE *file);
+Connection *graph_get_connection(Graph *graph, int idx_neighbor, int idx_connection);
+int graph_get_num_connections_from_node(Graph *graph, int idx_neighbor);
 
-Node *graph_get_node(Graph *graph, int idx_egde, int idx_node);
-int graph_get_num_nodes_from_edge(Graph *graph, int idx_edge);
 #endif // _GRAPH_H_

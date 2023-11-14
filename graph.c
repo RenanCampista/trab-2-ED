@@ -8,33 +8,33 @@ Graph *graph_construct(int num_nodes) {
     if (g == NULL)
         exit(printf("Error: graph_construct failed to allocate memory.\n"));
     g->num_nodes = num_nodes;
-    g->edge = vector_construct();
+    g->nodes = vector_construct();
     for (int i = 0; i < num_nodes; i++) {
-        AdjacencyList *e = adjacency_list_construct();
-        vector_push_back(g->edge, e);
+        Node *n = node_construct();
+        vector_push_back(g->nodes, n);
     }
     return g;
 }
 
-void graph_destruct(Graph *g) {
-    vector_destroy(g->edge);
-    free(g);
+void graph_destruct(Graph *graph) {
+    vector_destroy(graph->nodes);
+    free(graph);
 }
 
 // Adiciona uma aresta ao grafo
-void graph_add_edge(Graph *graph, int src, int dest, float weight){
-    AdjacencyList *e = (AdjacencyList *) vector_get(graph->edge, src);
-    adjacency_list_add_node(e, dest, weight);
+void graph_add_node(Graph *graph, int src, int neighbor, float weight){
+    Node *n = (Node *) vector_get(graph->nodes, src);
+    node_add_connection(n, neighbor, weight);
 }
 
 void graph_read(Graph* graph, FILE *file) {
-    int dest;
+    int neighbor;
     float weight;
     char c;
     for (int i = 0; i < graph->num_nodes; ++i) {
         while (1) {
-            fscanf(file, "%d %f%c", &dest, &weight, &c);
-            graph_add_edge(graph, i, dest, weight);
+            fscanf(file, "%d %f%c", &neighbor, &weight, &c);
+            graph_add_node(graph, i, neighbor, weight);
             if (c != ' ') {
                 break;
             }
@@ -42,12 +42,12 @@ void graph_read(Graph* graph, FILE *file) {
     }
 }
 
-Node *graph_get_node(Graph *graph, int idx_egde, int idx_node) {
-    AdjacencyList *e = (AdjacencyList *) vector_get(graph->edge, idx_egde);
-    return adjacency_list_get_node(e, idx_node);
+Connection *graph_get_connection(Graph *graph, int idx_neighbor, int idx_connection) {
+    Node *n = (Node *) vector_get(graph->nodes, idx_neighbor);
+    return node_get_connection(n, idx_connection);
 }
 
-int graph_get_num_nodes_from_edge(Graph *graph, int idx_edge) {
-    AdjacencyList *e = (AdjacencyList *) vector_get(graph->edge, idx_edge);
-    return adjacency_list_get_num_nodes(e);
+int graph_get_num_connections_from_node(Graph *graph, int idx_neighbor) {
+    Node *n = (Node *) vector_get(graph->nodes, idx_neighbor);
+    return node_get_num_connections(n);
 }
