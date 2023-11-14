@@ -77,8 +77,8 @@ void djikstra_solve(Problem *problem) {
         sptSet[u] = 1;
 
         for (int v = 0; v < problem->num_nodes; v++) {
-            if (!sptSet[v] && graph_get(problem->graph, v, u) && dist[u] != FLT_MAX && dist[u] + graph_get(problem->graph, v, u) < dist[v]) {
-                dist[v] = dist[u] + graph_get(problem->graph, v, u);
+            if (!sptSet[v] && graph_get(problem->graph, u, v) && dist[u] != FLT_MAX && dist[u] + graph_get(problem->graph, u, v) < dist[v]) {
+                dist[v] = dist[u] + graph_get(problem->graph, u, v);
                 parent[v] = u;
             }
         }

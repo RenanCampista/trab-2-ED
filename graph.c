@@ -49,12 +49,12 @@ void graph_read(Graph *g, FILE *file) {
             if(c != ' ' || c == '\n') {
                 break;
             }
-            Vector *v = (Vector *)vector_get(g->adj, i);
-            vector_set(v, neighbor, distance);
+            Vector *v = (Vector *)vector_get(g->adj, neighbor);
+            vector_set(v, i, distance);
         }
     }
-    graph_printI(g);
-    exit(1);
+    // graph_printI(g);
+    // exit(1);
 }
 
 float graph_get(Graph *g, int i, int j) {
