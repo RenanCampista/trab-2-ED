@@ -2,7 +2,7 @@
 #define _CONNECTION_H_
 
 typedef struct {
-    int neighbor;
+    int neighbor; //vertice
     float distance;
 } Connection;
 

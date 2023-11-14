@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
 #include "graph_node.h"
 
 GraphNode *graph_node_construct(int node_number) {
     GraphNode *graph_node = malloc(sizeof(GraphNode));
     graph_node->node_number = node_number;
     graph_node->connections = vector_construct();
-    graph_node->dist_origin = DISTANCE_NOT_DEFINED;
+    graph_node->dist_origin = FLT_MAX;
     return graph_node;
 }
 
@@ -32,5 +33,15 @@ void graph_node_add_connection(GraphNode *graph_node, Connection *connection) {
 }
 
 int graph_node_dist_origin_is_defined(GraphNode *graph_node) {
-    return graph_node->dist_origin != DISTANCE_NOT_DEFINED;
+    return graph_node->dist_origin != FLT_MAX;
+}
+
+void graph_node_print(GraphNode *graph_node) {
+    printf("Node %d\n", graph_node->node_number);
+    printf("Distance from origin: %f\n\n", graph_node->dist_origin);
+    // printf("Connections:\n");
+    // for (int i = 0; i < vector_size(graph_node->connections); i++) {
+    //     Connection *connection = (Connection *) vector_get(graph_node->connections, i);
+    //     printf("  Node %d, distance %f\n", connection_get_neighbor(connection), connection_get_distance(connection));
+    // }
 }
