@@ -15,12 +15,18 @@ Heap *heap_construct() {
     return heap;
 }
 
+void heap_node_destroy(HeapNode *node, void (*destroy_fn)(data_type)) {
+    if (destroy_fn != NULL)
+        destroy_fn(node->data);
+    free(node);
+}
+
 void heap_destroy(Heap *heap, void (*destroy_fn)(data_type)) {
-    if (destroy_fn != NULL) {
-        for (int i = 0; i < vector_size(heap->nodes); i++)
-            destroy_fn(vector_get(heap->nodes, i));
+    for (int i = 0; i < vector_size(heap->nodes); i++) {
+        HeapNode *node = (HeapNode *)vector_get(heap->nodes, i);
+        heap_node_destroy(node, destroy_fn);
     }
-    vector_destroy(heap->nodes, free);
+    vector_destroy(heap->nodes, NULL);
     free(heap);
 }
 
@@ -80,7 +86,7 @@ void heapify_up(Heap *heap, int idx) {
 //     }
 // }
 
-void heap_push(Heap *heap, data_type data, double priority) {
+void heap_push(Heap *heap, data_type data, float priority) {
     HeapNode *node = (HeapNode *)calloc(1, sizeof(HeapNode));
     if (node == NULL)
         exit(printf("Error: heap_push: could not allocate memory.\n"));
@@ -110,4 +116,14 @@ HeapNode heap_top(Heap *heap) {
     if (vector_size(heap->nodes) == 0)
         exit(printf("Error: heap_top: heap is empty.\n"));
     return *((HeapNode*)vector_get(heap->nodes, 0));
+}
+
+data_type heap_top_data(Heap *heap) {
+    if (vector_size(heap->nodes) == 0)
+        exit(printf("Error: heap_top_data: heap is empty.\n"));
+    return ((HeapNode*)vector_get(heap->nodes, 0))->data;
+}
+
+data_type heap_node_get_data (HeapNode *node) {
+    return node->data;
 }
