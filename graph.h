@@ -1,20 +1,21 @@
 #if !defined(_GRAPH_H_)
 #define _GRAPH_H_
-
-#include "vector.h"
+#include "adj_list.h"
 
 typedef struct Graph Graph;
+
 struct Graph {
-    Vector *adj;
+    int V;
+    AdjList* array;
 };
 
 Graph *graph_construct(int num_nodes);
-
+//Graph* createGraph(int V);
 void graph_destruct(Graph *g);
 
-void graph_read(Graph *g, FILE *file);
+// Adiciona uma aresta ao grafo
+void graph_add_edge(Graph *graph, int src, int dest, float weight);
 
-float graph_get(Graph *g, int i, int j);
- void graph_printI(Graph *g);
+void graph_read(const char* filename, Graph* graph);
 
 #endif // _GRAPH_H_
