@@ -7,13 +7,13 @@
 #include "heap.h"
 
 Vector* djikstra_solve(Problem *problem) {
-    Vector* dist = vector_construct();
+    Vector *dist = vector_construct();
     Vector *parent = vector_construct();
     Vector *visited = vector_construct();
 
     for (int i = 0; i < problem->num_nodes; i++) {
         float *dist_value = (float*)malloc(sizeof(float));
-        *dist_value = FLT_MAX;
+        *dist_value = i == 0 ? 0 : FLT_MAX;
         vector_push_back(dist, dist_value);
 
         int *parent_value = (int*)malloc(sizeof(int));
@@ -24,9 +24,6 @@ Vector* djikstra_solve(Problem *problem) {
         *visited_value = 0;
         vector_push_back(visited, visited_value);
     }
-
-    float *dist_value = vector_get(dist, 0);
-    *dist_value = 0;
 
     Heap *not_visited = heap_construct();
     int *origin = (int*)malloc(sizeof(int));
