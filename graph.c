@@ -16,7 +16,7 @@ Graph *graph_construct(int num_nodes) {
 }
 
 void graph_destruct(Graph *graph) {
-    vector_destroy(graph->nodes, node_destruct);
+    vector_destroy(graph->nodes, (data_type)node_destruct);
     free(graph);
 }
 

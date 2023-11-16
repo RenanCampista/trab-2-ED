@@ -25,10 +25,9 @@ Node *node_construct() {
     return node;
 }
 
-void node_destruct(data_type node) {
-    Node *n = (Node *) node;
-    vector_destroy(n->connections, free);
-    free(n);
+void node_destruct(Node *node) {
+    vector_destroy(node->connections, free);
+    free(node);
 }
 
 void node_add_connection(Node* node, int neighbor, float weight) {

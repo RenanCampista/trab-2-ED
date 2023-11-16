@@ -18,7 +18,7 @@ Node *node_construct();
  * @brief Destrói um nó, liberando a memória alocada.
  * @param node Ponteiro para o nó a ser destruído.
 */
-void node_destruct(data_type node);
+void node_destruct(Node *node);
 
 /**
  * @brief Adiciona uma conexão ao nó.
