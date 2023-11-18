@@ -1,7 +1,6 @@
 #if !defined(_PROBLEM_H_)
 #define _PROBLEM_H_
 
-#include "vector.h"
 #include "graph.h"
 
 

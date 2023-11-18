@@ -40,10 +40,18 @@ Vector* djikstra_solve(Problem *problem) {
         }
         *visited_value = 1;
 
+
+/*
+Para cada conexão, obter o nó vizinho (v) e o peso da conexão.
+Verificar se o nó vizinho já foi visitado e se a distância atual do nó *u não é infinita (ou seja, o nó *u já foi visitado) e se a distância do nó *u mais o peso da conexão é menor que a distância atual do nó vizinho.
+Se todas essas condições forem verdadeiras, ele atualiza a distância do nó vizinho para a soma da distância do nó *u e o peso da conexão.
+Ele também atualiza o nó pai do nó vizinho para o nó *u.
+Finalmente, adiciona o nó vizinho à lista de nós não visitados, com a nova distância como prioridade.
+*/
         for (int i = 0; i < graph_get_num_connections_from_node(problem->graph, *u); i++) {
             Connection *current_connection = graph_get_connection(problem->graph, *u, i);
             int v = connection_get_neighbor(current_connection);
-            int weight = connection_get_weight(current_connection);
+            float weight = connection_get_weight(current_connection);
             int *visited_status = vector_get(visited, v);
             float *dist_u_value = vector_get(dist, *u);
             float *dist_v_value = vector_get(dist, v);
