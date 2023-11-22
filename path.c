@@ -10,11 +10,15 @@ struct Path {
 Path *path_create(Vector *dist, Vector *parent, int dest) {
     Path *path = (Path *)calloc(1, sizeof(Path));
     if (path == NULL)
-        exit(printf("Error: bla bla bla\n"));
+        exit(printf("Error: path_create failed to allocate memory.\n"));
     path->nodes = vector_construct();
     path->cost = vector_get(dist, dest) == NULL ? -1 : *(float *)vector_get(dist, dest);
 
     int current = dest;
+    /**
+     * O Vector parent contém o vizinho de cada nó no caminho mais curto.
+     * Se o vizinho de um nó for -1, então o nó não tem vizinho ou o nó é o nó inicial.
+    */
     while (current != -1) {
         int* copy = (int*)malloc(sizeof(int));
         *copy = current;

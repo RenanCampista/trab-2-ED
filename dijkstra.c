@@ -8,7 +8,7 @@
 
 Vector* djikstra_solve(Problem *problem) {
     Vector *dist = vector_construct();
-    Vector *parent = vector_construct();
+    Vector *parent = vector_construct(); // parent[i] = vizinho com o menor caminho até o nó i
     Vector *visited = vector_construct();
 
     for (int i = 0; i < problem_get_num_nodes(problem); i++) {
@@ -31,42 +31,46 @@ Vector* djikstra_solve(Problem *problem) {
     heap_push(not_visited, origin, 0);
 
     while(!heap_is_empty(not_visited)) {
-        int *u = (int*)heap_pop(not_visited);
+        int *current_node = (int*)heap_pop(not_visited);
 
-        int *visited_value = vector_get(visited, *u);
-        if(visited_value == NULL || *visited_value == 1) {
-            free(u);
+        int *was_visited = vector_get(visited, *current_node);
+        if(was_visited == NULL || *was_visited) {
+            free(current_node);
             continue;
         }
-        *visited_value = 1;
 
+        *was_visited = 1;
+        float *dist_current_node = vector_get(dist, *current_node);
 
-        /*
-        Para cada conexão, obter o nó vizinho (v) e o peso da conexão.
-        Verificar se o nó vizinho já foi visitado e se a distância atual do nó *u não é infinita (ou seja, o nó *u já foi visitado) e se a distância do nó *u mais o peso da conexão é menor que a distância atual do nó vizinho.
-        Se todas essas condições forem verdadeiras, ele atualiza a distância do nó vizinho para a soma da distância do nó *u e o peso da conexão.
-        Ele também atualiza o nó pai do nó vizinho para o nó *u.
-        Finalmente, adiciona o nó vizinho à lista de nós não visitados, com a nova distância como prioridade.
+        /**
+         * Para cada vizinho do nó atual, se o vizinho não foi visitado e a distância do vizinho é maior que a distância do nó atual + o peso da conexão entre o nó atual e o vizinho, 
+         * então atualiza a distância do vizinho e o pai do vizinho.
+         * 
+         * O parente mais próximo do vizinho passará a ser o nó atual.
+         * 
+         * Como o vizinho não foi visitado, ele será adicionado na heap de nós não visitados.
+         * 
         */
-        for (int i = 0; i < graph_get_num_connections_from_node(problem_get_graph(problem), *u); i++) {
-            Connection *current_connection = graph_get_connection(problem_get_graph(problem), *u, i);
-            int v = connection_get_neighbor(current_connection);
-            float weight = connection_get_weight(current_connection);
-            int *visited_status = vector_get(visited, v);
-            float *dist_u_value = vector_get(dist, *u);
-            float *dist_v_value = vector_get(dist, v);
-            if (!(*visited_status) && *dist_u_value != FLT_MAX && (*dist_u_value + weight < *dist_v_value)) {
-                *dist_v_value = *dist_u_value + weight;
+        for (int i = 0; i < graph_get_num_connections_from_node(problem_get_graph(problem), *current_node); i++) {
+            Connection *current_connection = graph_get_connection(problem_get_graph(problem), *current_node, i);
+            int current_neighbor = connection_get_neighbor(current_connection);
+            float connection_weight = connection_get_weight(current_connection);
 
-                int *parent_value = vector_get(parent, v);
-                *parent_value = *u;
+            int *neighbor_was_visited = vector_get(visited, current_neighbor);
+            float *dist_current_neighbor = vector_get(dist, current_neighbor);
+
+            if (!(*neighbor_was_visited) && *dist_current_node != FLT_MAX && (*dist_current_node + connection_weight < *dist_current_neighbor)) {
+                *dist_current_neighbor = *dist_current_node + connection_weight;
+
+                int *parent_value = vector_get(parent, current_neighbor);
+                *parent_value = *current_node;
 
                 int *value = (int*)malloc(sizeof(int));
-                *value = v;
-                heap_push(not_visited, value, *dist_v_value);
+                *value = current_neighbor;
+                heap_push(not_visited, value, *dist_current_neighbor);
             } 
         }
-        free(u);
+        free(current_node);
     }
 
     Vector *paths = vector_construct();
