@@ -30,7 +30,6 @@ void dijkstra_navegate_connections(Problem *problem, int current_node, Vector *v
      * O parente mais próximo do vizinho passará a ser o nó atual.
      * 
      * Como o vizinho não foi visitado, ele será adicionado na heap de nós não visitados.
-     * 
     */
     float *dist_current_node = vector_get(dist, current_node);
     for (int i = 0; i < graph_get_num_connections_from_node(problem_get_graph(problem), current_node); i++) {
