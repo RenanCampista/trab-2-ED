@@ -12,7 +12,7 @@ typedef struct Path Path;
  * @param dest Nó de destino.
  * @return Ponteiro para o caminho criado.
 */
-Path *path_create(Vector *dist, Vector *parent, int dest);
+Path *path_construct(Vector *dist, Vector *parent, int dest);
 
 /**
  * @brief Libera a memória alocada para o caminho.

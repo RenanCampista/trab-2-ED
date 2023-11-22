@@ -75,7 +75,7 @@ Vector* djikstra_solve(Problem *problem) {
 
     Vector *paths = vector_construct();
     for (int i = 1; i < problem_get_num_nodes(problem); i++) {
-        Path *p = path_create(dist, parent, i);
+        Path *p = path_construct(dist, parent, i);
         vector_push_back(paths, p);
     }
     

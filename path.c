@@ -7,10 +7,10 @@ struct Path {
     float cost;    // Custo total do caminho
 };
 
-Path *path_create(Vector *dist, Vector *parent, int dest) {
+Path *path_construct(Vector *dist, Vector *parent, int dest) {
     Path *path = (Path *)calloc(1, sizeof(Path));
     if (path == NULL)
-        exit(printf("Error: path_create failed to allocate memory.\n"));
+        exit(printf("Error: path_construct failed to allocate memory.\n"));
     path->nodes = vector_construct();
     path->cost = vector_get(dist, dest) == NULL ? -1 : *(float *)vector_get(dist, dest);
 
