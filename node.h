@@ -1,8 +1,8 @@
 #if !defined(_NODE_H_)
 #define _NODE_H_
 #include "vector.h"
+#include "connection.h"
 
-typedef struct Connection Connection;
 typedef struct Node Node;
 
 /**
@@ -32,20 +32,6 @@ void node_add_connection(Node* node, int neighbor, float weight);
  * @return Ponteiro para a conexão.
 */
 Connection *node_get_connection(Node *node, int idx);
-
-/**
- * @brief Retorna o número do vizinho de uma conexão.
- * @param connection Ponteiro para a conexão.
- * @return O número do vizinho.
-*/
-int connection_get_neighbor(Connection *connection);
-
-/**
- * @brief Retorna o peso de uma conexão.
- * @param connection Ponteiro para a conexão.
- * @return O peso da conexão.
-*/
-float connection_get_weight(Connection *connection);
 
 /**
  * @brief Retorna o número de conexões de um nó.

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "node.h"
 #include "vector.h"
+#include "connection.h"
 
 typedef struct Graph Graph;
 
