@@ -10,7 +10,7 @@ typedef struct Problem Problem;
  * @param num_nodes Número de nós do problema.
  * @return Ponteiro para o novo problema.
  */
-Problem *problem_create(int num_nodes);
+Problem *problem_construct(int num_nodes);
 
 /**
  * @brief Destrói um problema, liberando a memória alocada.

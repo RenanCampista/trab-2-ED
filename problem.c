@@ -6,10 +6,10 @@ struct Problem {
     Graph *graph;
 };
 
-Problem *problem_create(int num_nodes) {
+Problem *problem_construct(int num_nodes) {
     Problem *problem = (Problem *)calloc(1, sizeof(Problem));
     if (problem == NULL)
-        exit(printf("Error: problem_create failed to allocate memory.\n"));
+        exit(printf("Error: problem_construct failed to allocate memory.\n"));
 
     problem->graph = graph_construct(num_nodes);
     return problem;
@@ -28,7 +28,7 @@ Problem *problem_data_read(const char *filename) {
 
     int num_nodes;
     fscanf(file, "%d", &num_nodes);
-    Problem *problem = problem_create(num_nodes);
+    Problem *problem = problem_construct(num_nodes);
     graph_read(problem->graph, file);
     fclose(file);
     return problem;
