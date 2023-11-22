@@ -35,6 +35,7 @@ void graph_read(Graph* graph, FILE *file) {
     char c;
     for (int i = 0; i < vector_size(graph->nodes); ++i) {
         while (1) {
+            c = '.';
             fscanf(file, "%d %f%c", &neighbor, &weight, &c);
             graph_add_node(graph, i, neighbor, weight);
             if (c != ' ') {
