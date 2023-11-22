@@ -4,9 +4,6 @@
 
 typedef struct Connection Connection;
 typedef struct Node Node;
-struct Node {
-    Vector* connections;
-};
 
 /**
  * @brief Cria um novo nó.

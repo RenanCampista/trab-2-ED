@@ -8,6 +8,10 @@ struct Connection {
     float weight;
 };
 
+struct Node {
+    Vector* connections;
+};
+
 Connection* connection_construct(int neighbor, float weight) {
     Connection *c = (Connection *)calloc(1, sizeof(Connection));
     if (c == NULL)
@@ -15,6 +19,10 @@ Connection* connection_construct(int neighbor, float weight) {
     c->neighbor = neighbor;
     c->weight = weight;
     return c;
+}
+
+void connection_destruct(Connection *connection) {
+    free(connection);
 }
 
 Node *node_construct() {
@@ -26,7 +34,7 @@ Node *node_construct() {
 }
 
 void node_destruct(Node *node) {
-    vector_destroy(node->connections, free);
+    vector_destroy(node->connections, (data_type)connection_destruct);
     free(node);
 }
 

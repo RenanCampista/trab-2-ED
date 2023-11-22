@@ -2,12 +2,15 @@
 #include <stdlib.h>
 #include "problem.h"
 
+struct Problem {
+    Graph *graph;
+};
+
 Problem *problem_create(int num_nodes) {
     Problem *problem = (Problem *)calloc(1, sizeof(Problem));
     if (problem == NULL)
         exit(printf("Error: problem_create failed to allocate memory.\n"));
 
-    problem->num_nodes = num_nodes;
     problem->graph = graph_construct(num_nodes);
     return problem;
 }
@@ -29,4 +32,13 @@ Problem *problem_data_read(const char *filename) {
     graph_read(problem->graph, file);
     fclose(file);
     return problem;
+}
+
+
+int problem_get_num_nodes(Problem *problem) {
+    return graph_get_num_nodes(problem->graph);
+}
+
+Graph *problem_get_graph(Problem *problem) {
+    return problem->graph;
 }

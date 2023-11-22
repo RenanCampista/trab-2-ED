@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct Path {
+    Vector *nodes; 
+    float cost;    // Custo total do caminho
+};
+
 Path *path_create(Vector *dist, Vector *parent, int dest) {
     Path *path = (Path *)calloc(1, sizeof(Path));
     if (path == NULL)

@@ -6,11 +6,6 @@
 
 typedef struct Graph Graph;
 
-struct Graph {
-    int num_nodes;
-    Vector *nodes;
-};
-
 /**
  * @brief Cria um novo grafo com o número de nós especificado e sem conexões.
  * @param num_nodes Número de nós do grafo.
@@ -56,5 +51,12 @@ Connection *graph_get_connection(Graph *graph, int idx_neighbor, int idx_connect
  * @return O número de conexões.
 */
 int graph_get_num_connections_from_node(Graph *graph, int idx);
+
+/**
+ * @brief Retorna o número de nós do grafo.
+ * @param graph Ponteiro para o grafo.
+ * @return O número de nós.
+*/
+int graph_get_num_nodes(Graph *graph);
 
 #endif // _GRAPH_H_

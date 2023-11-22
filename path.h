@@ -2,10 +2,8 @@
 #define _PATH_H_
 #include "vector.h"
 
-typedef struct Path {
-    Vector *nodes; 
-    float cost;    // Custo total do caminho
-} Path;
+typedef struct Path Path;
+
 
 /**
  * @brief Cria um caminho com base no vetor de distâncias e no vetor de pais.

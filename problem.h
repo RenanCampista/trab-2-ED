@@ -1,13 +1,9 @@
 #if !defined(_PROBLEM_H_)
 #define _PROBLEM_H_
-
 #include "graph.h"
 
+typedef struct Problem Problem;
 
-typedef struct {
-    int num_nodes;
-    Graph *graph;
-} Problem;
 
 /**
  * @brief Cria um novo problema com o número de nós especificado e grafo vazio.
@@ -28,5 +24,19 @@ void problem_destroy(Problem *problem);
  * @return Ponteiro para o problema lido.
 */
 Problem *problem_data_read(const char *filename);
+
+/**
+ * @brief Retorna o número de nós do problema.
+ * @param problem Ponteiro para o problema.
+ * @return O número de nós.
+*/
+int problem_get_num_nodes(Problem *problem);
+
+/**
+ * @brief Retorna o grafo do problema.
+ * @param problem Ponteiro para o problema.
+ * @return Ponteiro para o grafo.
+*/
+Graph *problem_get_graph(Problem *problem);
 
 #endif // _PROBLEM_H_
