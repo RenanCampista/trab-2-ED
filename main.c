@@ -17,7 +17,11 @@ int main() {
     Problem *problem_data;
     Vector *paths;
 
-    problem_data = problem_data_read("in.txt");
+    char file_name[100];
+    printf("Digite o nome do arquivo: ");
+    scanf("%s", file_name);
+
+    problem_data = problem_data_read(file_name);
     paths = djikstra_solve(problem_data);
     print_and_destroy_paths(paths);
     problem_destroy(problem_data);
