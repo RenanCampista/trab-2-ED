@@ -18,7 +18,7 @@ int main() {
     Vector *paths;
 
     char file_name[100];
-    printf("Digite o nome do arquivo: ");
+    printf("Digite o nome do arquivo que contem o grafo: ");
     scanf("%s", file_name);
 
     problem_data = problem_data_read(file_name);

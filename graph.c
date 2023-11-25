@@ -35,7 +35,7 @@ void graph_read(Graph* graph, FILE *file) {
     char c;
     for (int i = 0; i < vector_size(graph->nodes); ++i) {
         while (1) {
-            c = '.';
+            c = '-';
             fscanf(file, "%d %f%c", &neighbor, &weight, &c);
             graph_add_node(graph, i, neighbor, weight);
             if (c != ' ') {
@@ -43,6 +43,16 @@ void graph_read(Graph* graph, FILE *file) {
             }
         }
     }
+    //debug
+    // printf("node neighbor weight\n");
+    // for (int i = 0; i < vector_size(graph->nodes); ++i) {
+    //     Node *n = (Node *) vector_get(graph->nodes, i);
+    //     for (int j = 0; j < node_get_num_connections(n); ++j) {
+    //         Connection *c = node_get_connection(n, j);
+    //         printf("%d\t%d\t%f\n", i, connection_get_neighbor(c), connection_get_weight(c));
+    //     }
+    // }
+    // exit(0);
 }
 
 Connection *graph_get_connection(Graph *graph, int idx_neighbor, int idx_connection) {
